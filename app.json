@@ -24,7 +24,7 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "NSMediaLibraryUsageDescription": "Browse and play music"
+        "NSMediaLibraryUsageDescription": "Needs access to your files to play music"
       }
     },
     "android": {

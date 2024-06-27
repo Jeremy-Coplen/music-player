@@ -1,19 +1,59 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, SafeAreaView, Platform, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Platform, TouchableHighlight, PermissionsAndroid } from 'react-native';
+import * as Notifcations from "expo-notifications"
 import Constants from "expo-constants"
-import Permissions from "react-native-permissions"
-import MusicFiles from "react-native-get-music-files"
+// import { PERMISSIONS, request } from "react-native-permissions"
 
 export default function App() {
 
-  let getFilePermission = () => {
-    
+  let getFilePermission = async () => {
+    try {
+      if(Platform.OS === "android" ) {
+        // let reason = {
+        //   title: "Allow File Access",
+        //   message: "File access is required to be able to listen to music",
+        //   buttonPositive: "Allow",
+        //   buttonNegative: "Deny"
+        // }
+  
+        // let androidRequest = Permissions.request(
+        //   permission: "READ_EXTERNAL_STORAGE",
+        //   rationale: reason
+        // ):
+        // await Permissions.request("android.permission.READ_EXTERNAL_STORAGE").then(response => {
+        //   console.log(response)
+        // })
+        Notifcations.setNotificationChannelAsync("first noti", {name: "first"})
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+          {
+            title: "Device File Only Music Player File Permission",
+            message: "File access needed to play music",
+            buttonPositive: "Allow",
+            buttonNegative: "Deny"
+          }
+        )
+        if(granted === PermissionsAndroid.RESULTS.GRANTED) {
+          console.log("granted")
+        }
+        else {
+          console.log("Denied")
+        }
+      }
+      else {
+  
+      }
+      
+    }
+    catch(err) {
+      console.warn(err)
+    }
   }
 
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.text}>Device File Only Music Player</Text>
-      <TouchableHighlight onPress={() => console.log("Button Pressed")}>
+      <TouchableHighlight onPress={getFilePermission}>
         <View>
           <Text style={styles.button}>Browse Device Files</Text>
         </View>
